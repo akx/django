@@ -879,16 +879,9 @@ def yesno(value, arg=None):
     bits = arg.split(",")
     if len(bits) < 2:
         return value  # Invalid arg.
-    try:
-        yes, no, maybe = bits
-    except ValueError:
-        # Unpack list of wrong size (no "maybe" value provided).
-        yes, no, maybe = bits[0], bits[1], bits[1]
     if value is None:
-        return maybe
-    if value:
-        return yes
-    return no
+        return bits[2] if len(bits) == 3 else bits[1]
+    return bits[0] if value else bits[1]
 
 
 ###################
