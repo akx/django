@@ -391,7 +391,7 @@ class ChangeList:
             order_params = params[ORDER_VAR].split(".")
             for p in order_params:
                 try:
-                    none, pfx, idx = p.rpartition("-")
+                    _, pfx, idx = p.rpartition("-")
                     field_name = self.list_display[int(idx)]
                     order_field = self.get_ordering_field(field_name)
                     if not order_field:
@@ -453,7 +453,7 @@ class ChangeList:
                         break
         else:
             for p in self.params[ORDER_VAR].split("."):
-                none, pfx, idx = p.rpartition("-")
+                _, pfx, idx = p.rpartition("-")
                 try:
                     idx = int(idx)
                 except ValueError:
