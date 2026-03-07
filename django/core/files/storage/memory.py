@@ -128,12 +128,11 @@ class InMemoryDirNode(TimingMixin):
 
         # If a leaf_cls is not None, check if leaf node is of right type.
         if leaf_cls and not isinstance(current_node, leaf_cls):
-            error_cls, error_code = (
-                (NotADirectoryError, errno.ENOTDIR)
-                if leaf_cls is InMemoryDirNode
-                else (IsADirectoryError, errno.EISDIR)
-            )
-            raise error_cls(error_code, os.strerror(error_code), path)
+            if leaf_cls is InMemoryDirNode:
+                raise NotADirectoryError(
+                    errno.ENOTDIR, os.strerror(errno.ENOTDIR), path
+                )
+            raise IsADirectoryError(errno.EISDIR, os.strerror(errno.EISDIR), path)
 
         return current_node
 
