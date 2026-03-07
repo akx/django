@@ -502,7 +502,7 @@ class BaseCommand:
             databases=databases,
         )
 
-        header, body, footer = "", "", ""
+        header = body = footer = ""
         visible_issue_count = 0  # excludes silenced warnings
 
         if all_issues:

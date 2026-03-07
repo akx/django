@@ -712,7 +712,7 @@ class LayerMapping:
                     "The `step` keyword may not be used in conjunction with the "
                     "`fid_range` keyword."
                 )
-            beg, num_feat, num_saved = (0, 0, 0)
+            beg = num_feat = num_saved = 0
             indices = range(step, nfeat, step)
             n_i = len(indices)
 
