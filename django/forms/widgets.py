@@ -1212,24 +1212,25 @@ class SelectDateWidget(Widget):
         Use dict instead of a datetime to allow invalid dates such as February
         31 to display correctly.
         """
-        year, month, day = None, None, None
         if isinstance(value, (datetime.date, datetime.datetime)):
-            year, month, day = value.year, value.month, value.day
-        elif isinstance(value, str):
+            return {"year": value.year, "month": value.month, "day": value.day}
+
+        if isinstance(value, str):
             match = self.date_re.match(value)
             if match:
                 # Convert any zeros in the date to empty strings to match the
                 # empty option value.
                 year, month, day = [int(val) or "" for val in match.groups()]
+                return {"year": year, "month": month, "day": day}
             else:
                 input_format = get_format("DATE_INPUT_FORMATS")[0]
                 try:
                     d = datetime.datetime.strptime(value, input_format)
+                    return {"year": d.year, "month": d.month, "day": d.day}
                 except ValueError:
                     pass
-                else:
-                    year, month, day = d.year, d.month, d.day
-        return {"year": year, "month": month, "day": day}
+
+        return {"year": None, "month": None, "day": None}
 
     @staticmethod
     def _parse_date_fmt():
