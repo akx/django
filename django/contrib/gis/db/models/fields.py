@@ -35,24 +35,23 @@ def get_srid_info(srid, connection):
     given SRID from the `spatial_ref_sys` (or equivalent) spatial database
     table for the given database connection. These results are cached.
     """
-    from django.contrib.gis.gdal import SpatialReference
 
     try:
         # The SpatialRefSys model for the spatial backend.
         SpatialRefSys = connection.ops.spatial_ref_sys()
     except NotImplementedError:
-        SpatialRefSys = None
+        from django.contrib.gis.gdal import SpatialReference
 
-    alias, get_srs = (
-        (
-            connection.alias,
+        alias = None
+        get_srs = SpatialReference
+    else:
+        alias = connection.alias
+        get_srs = (
             lambda srid: SpatialRefSys.objects.using(connection.alias)
             .get(srid=srid)
-            .srs,
+            .srs
         )
-        if SpatialRefSys
-        else (None, SpatialReference)
-    )
+
     if srid not in _srid_cache[alias]:
         srs = get_srs(srid)
         units, units_name = srs.units
