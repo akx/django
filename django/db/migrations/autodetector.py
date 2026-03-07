@@ -1101,10 +1101,9 @@ class MigrationAutodetector:
                             old_field_keys.remove(
                                 (rem_app_label, rem_model_name, rem_field_name)
                             )
-                            old_field_keys.add((app_label, model_name, field_name))
-                            self.renamed_fields[app_label, model_name, field_name] = (
-                                rem_field_name
-                            )
+                            field_key = (app_label, model_name, field_name)
+                            old_field_keys.add(field_key)
+                            self.renamed_fields[field_key] = rem_field_name
                             break
 
     def generate_renamed_fields(self):
