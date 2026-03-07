@@ -81,13 +81,10 @@ def get_related_models_recursive(model):
     seen = set()
     queue = _get_related_models(model)
     for rel_mod in queue:
-        rel_app_label, rel_model_name = (
-            rel_mod._meta.app_label,
-            rel_mod._meta.model_name,
-        )
-        if (rel_app_label, rel_model_name) in seen:
+        rel_app_key = (rel_mod._meta.app_label, rel_mod._meta.model_name)
+        if rel_app_key in seen:
             continue
-        seen.add((rel_app_label, rel_model_name))
+        seen.add(rel_app_key)
         queue.extend(_get_related_models(rel_mod))
     return seen - {(model._meta.app_label, model._meta.model_name)}
 
