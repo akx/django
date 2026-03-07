@@ -31,7 +31,8 @@ class Lookup(Expression):
     can_use_none_as_rhs = False
 
     def __init__(self, lhs, rhs):
-        self.lhs, self.rhs = lhs, rhs
+        self.lhs = lhs
+        self.rhs = rhs
         self.rhs = self.get_prep_lookup()
         self.lhs = self.get_prep_lhs()
         if hasattr(self.lhs, "get_bilateral_transforms"):

@@ -429,10 +429,8 @@ class HttpRequest:
         Populate self._post and self._files if the content-type is a form type
         """
         if self.method != "POST":
-            self._post, self._files = (
-                QueryDict(encoding=self._encoding),
-                MultiValueDict(),
-            )
+            self._post = QueryDict(encoding=self._encoding)
+            self._files = MultiValueDict()
             return
         if self._read_started and not hasattr(self, "_body"):
             self._mark_post_parse_error()
@@ -465,10 +463,8 @@ class HttpRequest:
             self._post = QueryDict(self.body, encoding="utf-8")
             self._files = MultiValueDict()
         else:
-            self._post, self._files = (
-                QueryDict(encoding=self._encoding),
-                MultiValueDict(),
-            )
+            self._post = QueryDict(encoding=self._encoding)
+            self._files = MultiValueDict()
 
     def close(self):
         if hasattr(self, "_files"):

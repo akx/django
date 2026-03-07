@@ -163,7 +163,8 @@ class RawQuery:
 
         # Mirror some properties of a normal query so that
         # the compiler can be used to process results.
-        self.low_mark, self.high_mark = 0, None  # Used for offset/limit
+        self.low_mark = 0
+        self.high_mark = None  # Used for offset/limit
         self.extra_select = {}
         self.annotation_select = {}
 
@@ -1776,7 +1777,8 @@ class Query(BaseExpression):
         contain the same value as the final field). Finally, return those names
         that weren't found (which are likely transforms and the final lookup).
         """
-        path, names_with_path = [], []
+        path = []
+        names_with_path = []
         for pos, name in enumerate(names):
             cur_names_with_path = (name, [])
             if name == "pk" and opts is not None:
@@ -2201,7 +2203,8 @@ class Query(BaseExpression):
 
     def clear_limits(self):
         """Clear any existing limits."""
-        self.low_mark, self.high_mark = 0, None
+        self.low_mark = 0
+        self.high_mark = None
 
     @property
     def is_sliced(self):

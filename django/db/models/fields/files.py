@@ -427,7 +427,8 @@ class ImageField(FileField):
         height_field=None,
         **kwargs,
     ):
-        self.width_field, self.height_field = width_field, height_field
+        self.width_field = width_field
+        self.height_field = height_field
         super().__init__(verbose_name, name, **kwargs)
 
     def check(self, **kwargs):

@@ -31,7 +31,8 @@ class CreateModel(TestOperation):
 
 class ArgsOperation(TestOperation):
     def __init__(self, arg1, arg2):
-        self.arg1, self.arg2 = arg1, arg2
+        self.arg1 = arg1
+        self.arg2 = arg2
 
     def deconstruct(self):
         return (self.__class__.__name__, [self.arg1, self.arg2], {})
@@ -39,7 +40,8 @@ class ArgsOperation(TestOperation):
 
 class KwargsOperation(TestOperation):
     def __init__(self, kwarg1=None, kwarg2=None):
-        self.kwarg1, self.kwarg2 = kwarg1, kwarg2
+        self.kwarg1 = kwarg1
+        self.kwarg2 = kwarg2
 
     def deconstruct(self):
         kwargs = {}
@@ -52,8 +54,10 @@ class KwargsOperation(TestOperation):
 
 class ArgsKwargsOperation(TestOperation):
     def __init__(self, arg1, arg2, kwarg1=None, kwarg2=None):
-        self.arg1, self.arg2 = arg1, arg2
-        self.kwarg1, self.kwarg2 = kwarg1, kwarg2
+        self.arg1 = arg1
+        self.arg2 = arg2
+        self.kwarg1 = kwarg1
+        self.kwarg2 = kwarg2
 
     def deconstruct(self):
         kwargs = {}

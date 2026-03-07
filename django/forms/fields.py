@@ -136,7 +136,9 @@ class Field:
         #                 form's label_suffix.
         # bound_field_class -- BoundField class to use in
         #                      Field.get_bound_field.
-        self.required, self.label, self.initial = required, label, initial
+        self.required = required
+        self.label = label
+        self.initial = initial
         self.show_hidden_initial = show_hidden_initial
         self.help_text = help_text
         self.disabled = disabled
@@ -315,7 +317,9 @@ class IntegerField(Field):
     re_decimal = _lazy_re_compile(r"\.0*\s*$")
 
     def __init__(self, *, max_value=None, min_value=None, step_size=None, **kwargs):
-        self.max_value, self.min_value, self.step_size = max_value, min_value, step_size
+        self.max_value = max_value
+        self.min_value = min_value
+        self.step_size = step_size
         if kwargs.get("localize") and self.widget == NumberInput:
             # Localized number input is not well supported on most browsers
             kwargs.setdefault("widget", super().widget)
@@ -412,7 +416,8 @@ class DecimalField(IntegerField):
         decimal_places=None,
         **kwargs,
     ):
-        self.max_digits, self.decimal_places = max_digits, decimal_places
+        self.max_digits = max_digits
+        self.decimal_places = decimal_places
         super().__init__(max_value=max_value, min_value=min_value, **kwargs)
         self.validators.append(validators.DecimalValidator(max_digits, decimal_places))
 
@@ -1191,8 +1196,11 @@ class FilePathField(ChoiceField):
         allow_folders=False,
         **kwargs,
     ):
-        self.path, self.match, self.recursive = path, match, recursive
-        self.allow_files, self.allow_folders = allow_files, allow_folders
+        self.path = path
+        self.match = match
+        self.recursive = recursive
+        self.allow_files = allow_files
+        self.allow_folders = allow_folders
         super().__init__(choices=(), **kwargs)
 
         if self.required:

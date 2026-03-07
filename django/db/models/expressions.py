@@ -1263,7 +1263,8 @@ class RawSQL(Expression):
     def __init__(self, sql, params, output_field=None):
         if output_field is None:
             output_field = fields.Field()
-        self.sql, self.params = sql, params
+        self.sql = sql
+        self.params = params
         super().__init__(output_field=output_field)
 
     def __repr__(self):
@@ -1348,7 +1349,8 @@ class Col(Expression):
         if output_field is None:
             output_field = target
         super().__init__(output_field=output_field)
-        self.alias, self.target = alias, target
+        self.alias = alias
+        self.target = target
 
     def __repr__(self):
         alias, target = self.alias, self.target
@@ -1444,7 +1446,8 @@ class Ref(Expression):
 
     def __init__(self, refs, source):
         super().__init__()
-        self.refs, self.source = refs, source
+        self.refs = refs
+        self.source = source
 
     def __repr__(self):
         return "{}({}, {})".format(self.__class__.__name__, self.refs, self.source)

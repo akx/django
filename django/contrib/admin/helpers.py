@@ -46,7 +46,8 @@ class AdminForm:
         readonly_fields=None,
         model_admin=None,
     ):
-        self.form, self.fieldsets = form, fieldsets
+        self.form = form
+        self.fieldsets = fieldsets
         self.prepopulated_fields = [
             {"field": form[field_name], "dependencies": [form[f] for f in dependencies]}
             for field_name, dependencies in prepopulated_fields.items()
@@ -109,7 +110,8 @@ class Fieldset:
         model_admin=None,
     ):
         self.form = form
-        self.name, self.fields = name, fields
+        self.name = name
+        self.fields = fields
         self.classes = " ".join(classes)
         self.description = description
         self.model_admin = model_admin

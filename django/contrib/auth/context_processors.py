@@ -4,7 +4,8 @@
 
 class PermLookupDict:
     def __init__(self, user, app_label):
-        self.user, self.app_label = user, app_label
+        self.user = user
+        self.app_label = app_label
 
     def __repr__(self):
         return str(self.user.get_all_permissions())

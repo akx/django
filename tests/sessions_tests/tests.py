@@ -276,7 +276,8 @@ class SessionTestsMixin:
         self.assertIs(self.session.accessed, True)
 
     def test_cycle(self):
-        self.session["a"], self.session["b"] = "c", "d"
+        self.session["a"] = "c"
+        self.session["b"] = "d"
         self.session.save()
         prev_key = self.session.session_key
         prev_data = list(self.session.items())
@@ -297,7 +298,8 @@ class SessionTestsMixin:
         self.assertEqual(list(await self.session.aitems()), prev_data)
 
     def test_cycle_with_no_session_cache(self):
-        self.session["a"], self.session["b"] = "c", "d"
+        self.session["a"] = "c"
+        self.session["b"] = "d"
         self.session.save()
         prev_data = self.session.items()
         self.session = self.backend(self.session.session_key)

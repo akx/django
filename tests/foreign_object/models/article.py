@@ -19,7 +19,9 @@ class ArticleTranslationDescriptor(ForwardManyToOneDescriptor):
 class ColConstraint:
     # Anything with as_sql() method works in get_extra_restriction().
     def __init__(self, alias, col, value):
-        self.alias, self.col, self.value = alias, col, value
+        self.alias = alias
+        self.col = col
+        self.value = value
 
     def as_sql(self, compiler, connection):
         qn = compiler.quote_name_unless_alias

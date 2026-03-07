@@ -212,8 +212,10 @@ class Field(RegisterLookupMixin):
         self.verbose_name = verbose_name  # May be set by set_attributes_from_name
         self._verbose_name = verbose_name  # Store original for deconstruction
         self.primary_key = primary_key
-        self.max_length, self._unique = max_length, unique
-        self.blank, self.null = blank, null
+        self.max_length = max_length
+        self._unique = unique
+        self.blank = blank
+        self.null = null
         self.remote_field = rel
         self.is_relation = self.remote_field is not None
         self.default = default
@@ -1436,7 +1438,8 @@ class DateField(DateTimeCheckMixin, Field):
     def __init__(
         self, verbose_name=None, name=None, auto_now=False, auto_now_add=False, **kwargs
     ):
-        self.auto_now, self.auto_now_add = auto_now, auto_now_add
+        self.auto_now = auto_now
+        self.auto_now_add = auto_now_add
         if auto_now or auto_now_add:
             kwargs["editable"] = False
             kwargs["blank"] = True
@@ -1710,7 +1713,8 @@ class DecimalField(Field):
         decimal_places=None,
         **kwargs,
     ):
-        self.max_digits, self.decimal_places = max_digits, decimal_places
+        self.max_digits = max_digits
+        self.decimal_places = decimal_places
         super().__init__(verbose_name, name, **kwargs)
 
     def check(self, **kwargs):
@@ -1992,8 +1996,11 @@ class FilePathField(Field):
         allow_folders=False,
         **kwargs,
     ):
-        self.path, self.match, self.recursive = path, match, recursive
-        self.allow_files, self.allow_folders = allow_files, allow_folders
+        self.path = path
+        self.match = match
+        self.recursive = recursive
+        self.allow_files = allow_files
+        self.allow_folders = allow_folders
         kwargs.setdefault("max_length", 100)
         super().__init__(verbose_name, name, **kwargs)
 
@@ -2573,7 +2580,8 @@ class TimeField(DateTimeCheckMixin, Field):
     def __init__(
         self, verbose_name=None, name=None, auto_now=False, auto_now_add=False, **kwargs
     ):
-        self.auto_now, self.auto_now_add = auto_now, auto_now_add
+        self.auto_now = auto_now
+        self.auto_now_add = auto_now_add
         if auto_now or auto_now_add:
             kwargs["editable"] = False
             kwargs["blank"] = True
