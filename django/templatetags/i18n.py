@@ -548,7 +548,7 @@ def do_block_translate(parser, token):
     if "count" in options:
         countervar, counter = next(iter(options["count"].items()))
     else:
-        countervar, counter = None, None
+        countervar = counter = None
     if "context" in options:
         message_context = options["context"]
     else:

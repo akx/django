@@ -180,7 +180,7 @@ def write_pot_file(potfile, msgs):
         lines = dropwhile(len, pot_lines)
     else:
         lines = []
-        found, header_read = False, False
+        found = header_read = False
         for line in pot_lines:
             if not found and not header_read:
                 if "charset=CHARSET" in line:
