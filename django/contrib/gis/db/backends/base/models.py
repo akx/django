@@ -120,7 +120,7 @@ class SpatialRefSysMixin:
         else:
             # `string` parameter used to place in format acceptable by PostGIS
             if len(sphere_params) == 3:
-                radius, flattening = sphere_params[0], sphere_params[2]
+                radius, _, flattening = sphere_params
             else:
                 radius, flattening = sphere_params
             return 'SPHEROID["%s",%s,%s]' % (sphere_name, radius, flattening)
