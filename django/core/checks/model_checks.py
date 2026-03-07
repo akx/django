@@ -90,6 +90,25 @@ def check_all_models(app_configs, **kwargs):
     return errors
 
 
+def _extract_operation(obj):
+    """
+    Take a callable found in Apps._pending_operations and identify the
+    original callable passed to Apps.lazy_model_operation(). If that
+    callable was a partial, return the inner, non-partial function and
+    any arguments and keyword arguments that were supplied with it.
+
+    obj is a callback defined locally in Apps.lazy_model_operation() and
+    annotated there with a `func` attribute so as to imitate a partial.
+    """
+    args = []
+    keywords = {}
+    while hasattr(obj, "func"):
+        args.extend(getattr(obj, "args", []))
+        keywords.update(getattr(obj, "keywords", {}))
+        obj = obj.func
+    return obj, args, keywords
+
+
 def _check_lazy_references(apps, ignore=None):
     """
     Ensure all lazy (i.e. string) model references have been resolved.
@@ -114,23 +133,6 @@ def _check_lazy_references(apps, ignore=None):
         for name, signal in vars(signals).items()
         if isinstance(signal, signals.ModelSignal)
     }
-
-    def extract_operation(obj):
-        """
-        Take a callable found in Apps._pending_operations and identify the
-        original callable passed to Apps.lazy_model_operation(). If that
-        callable was a partial, return the inner, non-partial function and
-        any arguments and keyword arguments that were supplied with it.
-
-        obj is a callback defined locally in Apps.lazy_model_operation() and
-        annotated there with a `func` attribute so as to imitate a partial.
-        """
-        operation, args, keywords = obj, [], {}
-        while hasattr(operation, "func"):
-            args.extend(getattr(operation, "args", []))
-            keywords.update(getattr(operation, "keywords", {}))
-            operation = operation.func
-        return operation, args, keywords
 
     def app_model_error(model_key):
         try:
@@ -213,7 +215,7 @@ def _check_lazy_references(apps, ignore=None):
         filter(
             None,
             (
-                build_error(model_key, *extract_operation(func))
+                build_error(model_key, *_extract_operation(func))
                 for model_key in pending_models
                 for func in apps._pending_operations[model_key]
             ),
