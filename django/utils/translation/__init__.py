@@ -47,42 +47,45 @@ class TranslatorCommentWarning(SyntaxWarning):
 # settings).
 
 
+def _load_translation_module() -> None:
+    global _trans
+    from django.conf import settings
+
+    if settings.USE_I18N:
+        from django.utils.translation import trans_real as trans
+        from django.utils.translation.reloader import (
+            translation_file_changed,
+            watch_for_translation_changes,
+        )
+
+        autoreload_started.connect(
+            watch_for_translation_changes, dispatch_uid="translation_file_changed"
+        )
+        file_changed.connect(
+            translation_file_changed, dispatch_uid="translation_file_changed"
+        )
+    else:
+        from django.utils.translation import trans_null as trans
+    _trans = trans
+
+
 class Trans:
     """
-    The purpose of this class is to store the actual translation function upon
-    receiving the first call to that function. After this is done, changes to
-    USE_I18N will have no effect to which function is served upon request. If
-    your tests rely on changing USE_I18N, you can delete all the functions
-    from _trans.__dict__.
-
-    Note that storing the function with setattr will have a noticeable
-    performance effect, as access to the function goes the normal path,
-    instead of using __getattr__.
+    The purpose of this class is solely to call `_load_translation_module()`
+    upon first attribute access, at which point the sole `_trans` instance
+    will have been replaced by the actual translation module in use.
+    After this is done, changes to USE_I18N will have no effect to which
+    function is served upon request. If your tests rely on changing USE_I18N,
+    you can call ``_load_translation_module()`` manually.
     """
 
     def __getattr__(self, real_name):
-        from django.conf import settings
-
-        if settings.USE_I18N:
-            from django.utils.translation import trans_real as trans
-            from django.utils.translation.reloader import (
-                translation_file_changed,
-                watch_for_translation_changes,
-            )
-
-            autoreload_started.connect(
-                watch_for_translation_changes, dispatch_uid="translation_file_changed"
-            )
-            file_changed.connect(
-                translation_file_changed, dispatch_uid="translation_file_changed"
-            )
-        else:
-            from django.utils.translation import trans_null as trans
-        setattr(self, real_name, getattr(trans, real_name))
-        return getattr(trans, real_name)
+        _load_translation_module()
+        # `_trans` is no longer this instance at this point.
+        return getattr(_trans, real_name)
 
 
-_trans = Trans()
+_trans = Trans()  # See above; will be replaced by the real translation module.
 
 # The Trans class is no more needed, so remove it from the namespace.
 del Trans
