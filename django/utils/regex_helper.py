@@ -320,7 +320,8 @@ def flatten_result(source):
         if isinstance(elt, (Choice, NonCapture)):
             if isinstance(elt, NonCapture):
                 elt = [elt]
-            inner_result, inner_args = [], []
+            inner_result = []
+            inner_args = []
             for item in elt:
                 res, args = flatten_result(item)
                 inner_result.extend(res)

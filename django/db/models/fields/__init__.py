@@ -357,7 +357,8 @@ class Field(RegisterLookupMixin):
                     )
             except (TypeError, ValueError):
                 # No groups, choices in the form [value, display]
-                value, human_name = group_name, group_choices
+                value = group_name
+                human_name = group_choices
                 if not self._choices_is_value(value) or not self._choices_is_value(
                     human_name
                 ):

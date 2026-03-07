@@ -640,7 +640,10 @@ class LineString(OGRGeometry):
     def __getitem__(self, index):
         "Return the Point at the given index."
         if 0 <= index < self.point_count:
-            x, y, z, m = c_double(), c_double(), c_double(), c_double()
+            x = c_double()
+            y = c_double()
+            z = c_double()
+            m = c_double()
             capi.get_point(self.ptr, index, byref(x), byref(y), byref(z), byref(m))
             if self.is_3d and self.is_measured:
                 return x.value, y.value, z.value, m.value

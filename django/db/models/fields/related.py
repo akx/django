@@ -1774,11 +1774,9 @@ class ManyToManyField(RelatedField):
                     "where the field is attached to."
                 )
 
-                source, through, target = (
-                    from_model,
-                    self.remote_field.through,
-                    self.remote_field.model,
-                )
+                source = from_model
+                through = self.remote_field.through
+                target = self.remote_field.model
                 source_field_name, target_field_name = self.remote_field.through_fields[
                     :2
                 ]
@@ -1877,14 +1875,16 @@ class ManyToManyField(RelatedField):
             else:
                 clashing_obj = model._meta.label
             if settings.DATABASE_ROUTERS:
-                error_class, error_id = checks.Warning, "fields.W344"
+                error_class = checks.Warning
+                error_id = "fields.W344"
                 error_hint = (
                     "You have configured settings.DATABASE_ROUTERS. Verify "
                     "that the table of %r is correctly routed to a separate "
                     "database." % clashing_obj
                 )
             else:
-                error_class, error_id = checks.Error, "fields.E340"
+                error_class = checks.Error
+                error_id = "fields.E340"
                 error_hint = None
             return [
                 error_class(

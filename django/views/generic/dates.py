@@ -759,7 +759,8 @@ def _get_next_prev(generic_view, date, is_previous, period):
     get_next = getattr(generic_view, "_get_next_%s" % period)
 
     # Bounds of the current interval
-    start, end = get_current(date), get_next(date)
+    start = get_current(date)
+    end = get_next(date)
 
     # If allow_empty is True, the naive result will be valid
     if allow_empty:

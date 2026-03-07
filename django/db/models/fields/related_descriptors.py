@@ -102,7 +102,8 @@ def _filter_prefetch_queryset(queryset, field_name, instances):
                 "Prefetching from a limited queryset is only supported on backends "
                 "that support window functions."
             )
-        low_mark, high_mark = queryset.query.low_mark, queryset.query.high_mark
+        low_mark = queryset.query.low_mark
+        high_mark = queryset.query.high_mark
         order_by = [
             expr for expr, _ in queryset.query.get_compiler(using=db).get_order_by()
         ]

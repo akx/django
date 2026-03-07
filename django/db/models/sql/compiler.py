@@ -187,7 +187,8 @@ class SQLCompiler:
                 allows_group_by_select_index
                 and (position := selected_expr_positions.get(expr)) is not None
             ):
-                sql, params = str(position), ()
+                sql = str(position)
+                params = ()
             else:
                 sql, params = expr.select_format(self, sql, params)
             params_hash = make_hashable(params)
@@ -320,7 +321,8 @@ class SQLCompiler:
                 )
                 if empty_result_set_value is NotImplemented:
                     # Select a predicate that's always False.
-                    sql, params = "0", ()
+                    sql = "0"
+                    params = ()
                 else:
                     sql, params = self.compile(Value(empty_result_set_value))
             except FullResultSet:
@@ -805,17 +807,20 @@ class SQLCompiler:
                     if self.elide_empty:
                         raise
                     # Use a predicate that's always False.
-                    where, w_params = "0 = 1", []
+                    where = "0 = 1"
+                    w_params = []
                 except FullResultSet:
-                    where, w_params = "", []
+                    where = ""
+                    w_params = []
                 try:
-                    having, h_params = (
-                        self.compile(self.having)
-                        if self.having is not None
-                        else ("", [])
-                    )
+                    if self.having is not None:
+                        having, h_params = self.compile(self.having)
+                    else:
+                        having = ""
+                        h_params = []
                 except FullResultSet:
-                    having, h_params = "", []
+                    having = ""
+                    h_params = []
                 result = ["SELECT"]
                 params = []
 
@@ -2046,7 +2051,8 @@ class SQLUpdateCompiler(SQLCompiler):
         if not self.query.values:
             return "", ()
         qn = self.quote_name_unless_alias
-        values, update_params = [], []
+        values = []
+        update_params = []
         for field, model, val in self.query.values:
             if hasattr(val, "resolve_expression"):
                 val = val.resolve_expression(
@@ -2240,7 +2246,8 @@ class SQLAggregateCompiler(SQLCompiler):
         Create the SQL for this query. Return the SQL string and list of
         parameters.
         """
-        sql, params = [], []
+        sql = []
+        params = []
         for annotation in self.query.annotation_select.values():
             ann_sql, ann_params = self.compile(annotation)
             ann_sql, ann_params = annotation.select_format(self, ann_sql, ann_params)

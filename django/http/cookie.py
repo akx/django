@@ -15,8 +15,10 @@ def parse_cookie(cookie):
         else:
             # Assume an empty name per
             # https://bugzilla.mozilla.org/show_bug.cgi?id=169091
-            key, val = "", chunk
-        key, val = key.strip(), val.strip()
+            key = ""
+            val = chunk
+        key = key.strip()
+        val = val.strip()
         if key or val:
             # unquote using Python's algorithm.
             cookiedict[key] = cookies._unquote(val)

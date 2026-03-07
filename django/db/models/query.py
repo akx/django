@@ -98,14 +98,13 @@ class ModelIterable(BaseIterable):
         results = compiler.execute_sql(
             chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
         )
-        select, klass_info, annotation_col_map = (
-            compiler.select,
-            compiler.klass_info,
-            compiler.annotation_col_map,
-        )
+        select = compiler.select
+        klass_info = compiler.klass_info
+        annotation_col_map = compiler.annotation_col_map
         model_cls = klass_info["model"]
         select_fields = klass_info["select_fields"]
-        model_fields_start, model_fields_end = select_fields[0], select_fields[-1] + 1
+        model_fields_start = select_fields[0]
+        model_fields_end = select_fields[-1] + 1
         init_list = [
             f[0].target.attname for f in select[model_fields_start:model_fields_end]
         ]
@@ -699,7 +698,8 @@ class QuerySet(AltersData):
     acreate.alters_data = True
 
     def _prepare_for_bulk_create(self, objs):
-        objs_with_pk, objs_without_pk = [], []
+        objs_with_pk = []
+        objs_without_pk = []
         for obj in objs:
             if isinstance(obj.pk, DatabaseDefault):
                 objs_without_pk.append(obj)

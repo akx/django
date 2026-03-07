@@ -197,7 +197,8 @@ class ChangeList:
                     # This is simply a field name, so use the default
                     # FieldListFilter class that has been registered for the
                     # type of the given field.
-                    field, field_list_filter_class = list_filter, FieldListFilter.create
+                    field = list_filter
+                    field_list_filter_class = FieldListFilter.create
                 if not isinstance(field, Field):
                     field_path = field
                     field = get_fields_from_path(self.model, field_path)[-1]

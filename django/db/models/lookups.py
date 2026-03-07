@@ -62,7 +62,8 @@ class Lookup(Expression):
         if rhs is None:
             rhs = self.rhs
         if self.bilateral_transforms:
-            sqls, sqls_params = [], []
+            sqls = []
+            sqls_params = []
             for p in rhs:
                 value = Value(p, output_field=self.lhs.output_field)
                 value = self.apply_bilateral_transforms(value)
@@ -72,7 +73,8 @@ class Lookup(Expression):
                 sqls_params.extend(sql_params)
         else:
             _, params = self.get_db_prep_lookup(rhs, connection)
-            sqls, sqls_params = ["%s"] * len(params), params
+            sqls = ["%s"] * len(params)
+            sqls_params = params
         return sqls, sqls_params
 
     def get_source_expressions(self):

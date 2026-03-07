@@ -46,7 +46,8 @@ class Command(BaseCommand):
         loader = MigrationLoader(connection, replace_migrations=False)
 
         # Resolve command-line arguments into a migration
-        app_label, migration_name = options["app_label"], options["migration_name"]
+        app_label = options["app_label"]
+        migration_name = options["migration_name"]
         # Validate app_label
         try:
             apps.get_app_config(app_label)

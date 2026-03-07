@@ -1353,7 +1353,8 @@ class Col(Expression):
         self.target = target
 
     def __repr__(self):
-        alias, target = self.alias, self.target
+        alias = self.alias
+        target = self.target
         identifiers = (alias, str(target)) if alias else (str(target),)
         return "{}({})".format(self.__class__.__name__, ", ".join(identifiers))
 
@@ -1636,9 +1637,11 @@ class When(Expression):
     def __init__(self, condition=None, then=None, **lookups):
         if lookups:
             if condition is None:
-                condition, lookups = Q(**lookups), None
+                condition = Q(**lookups)
+                lookups = None
             elif getattr(condition, "conditional", False):
-                condition, lookups = Q(condition, **lookups), None
+                condition = Q(condition, **lookups)
+                lookups = None
         if condition is None or not getattr(condition, "conditional", False) or lookups:
             raise TypeError(
                 "When() supports a Q object, a boolean expression, or lookups "
@@ -2058,7 +2061,8 @@ class Window(SQLiteNumericMixin, Expression):
         if not connection.features.supports_over_clause:
             raise NotSupportedError("This backend does not support window expressions.")
         expr_sql, params = compiler.compile(self.source_expression)
-        window_sql, window_params = [], ()
+        window_sql = []
+        window_params = ()
 
         if self.partition_by is not None:
             sql_expr, sql_params = self.partition_by.as_sql(

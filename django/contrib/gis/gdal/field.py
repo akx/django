@@ -73,7 +73,14 @@ class Field(GDALBase):
         "Retrieve the Field's value as a tuple of date & time components."
         if not self.is_set:
             return None
-        yy, mm, dd, hh, mn, ss, tz = [c_int() for i in range(7)]
+        yy = c_int()
+        mm = c_int()
+        dd = c_int()
+        hh = c_int()
+        mn = c_int()
+        ss = c_int()
+        tz = c_int()
+
         status = capi.get_field_as_datetime(
             self._feat.ptr,
             self._index,

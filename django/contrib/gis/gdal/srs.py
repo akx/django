@@ -244,7 +244,8 @@ class SpatialReference(GDALBase):
         Return a 2-tuple of the units value and the units name. Automatically
         determine whether to return the linear or angular units.
         """
-        units, name = None, None
+        units = None
+        name = None
         if self.projected or self.local:
             units, name = capi.linear_units(self.ptr, byref(c_char_p()))
         elif self.geographic:

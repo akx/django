@@ -81,7 +81,8 @@ def format(
         if decimal_pos is not None:
             dec_part = dec_part[:decimal_pos]
     else:
-        int_part, dec_part = str_number, ""
+        int_part = str_number
+        dec_part = ""
     if decimal_pos is not None:
         dec_part += "0" * (decimal_pos - len(dec_part))
     dec_part = dec_part and decimal_sep + dec_part

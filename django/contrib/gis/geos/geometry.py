@@ -676,7 +676,8 @@ class GEOSGeometryBase(GEOSBase):
         env = self.envelope
         if isinstance(env, Point):
             xmin, ymin = env.tuple
-            xmax, ymax = xmin, ymin
+            xmax = xmin
+            ymax = ymin
         else:
             xmin, ymin = env[0][0]
             xmax, ymax = env[0][2]

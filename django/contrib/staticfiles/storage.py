@@ -178,7 +178,8 @@ class HashedFilesMixin:
         Return the non-hashed URL in DEBUG mode.
         """
         if settings.DEBUG and not force:
-            hashed_name, fragment = name, ""
+            hashed_name = name
+            fragment = ""
         else:
             clean_name, fragment = urldefrag(name)
             if urlsplit(clean_name).path.endswith("/"):  # don't hash paths

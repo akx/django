@@ -276,7 +276,8 @@ def split_identifier(identifier):
     try:
         namespace, name = identifier.split('"."')
     except ValueError:
-        namespace, name = "", identifier
+        namespace = ""
+        name = identifier
     return namespace.strip('"'), name.strip('"')
 
 

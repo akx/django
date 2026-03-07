@@ -161,7 +161,9 @@ class ValidationError(Exception):
             elif not hasattr(message, "message"):
                 message = message.error_list
             else:
-                message, code, params = message.message, message.code, message.params
+                message = message.message
+                code = message.code
+                params = message.params
 
         if isinstance(message, dict):
             self.error_dict = {}

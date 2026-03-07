@@ -190,7 +190,8 @@ def replace_metacharacters(pattern):
 
 def _get_group_start_end(start, end, pattern):
     # Handle nested parentheses, e.g. '^(?P<a>(x|y))/b' or '^b/((x|y)\w+)$'.
-    unmatched_open_brackets, prev_char = 1, None
+    unmatched_open_brackets = 1
+    prev_char = None
     for idx, val in enumerate(pattern[end:]):
         # Check for unescaped `(` and `)`. They mark the start and end of a
         # nested group.
@@ -240,7 +241,8 @@ def replace_unnamed_groups(pattern):
     3. ^(?P<a>\w+)/b/(\w+) ==> ^(?P<a>\w+)/b/<var>
     4. ^(?P<a>\w+)/b/((x|y)\w+) ==> ^(?P<a>\w+)/b/<var>
     """
-    final_pattern, prev_end = "", None
+    final_pattern = ""
+    prev_end = None
     for start, end, _ in _find_groups(pattern, unnamed_group_matcher):
         if prev_end:
             final_pattern += pattern[prev_end:start]
@@ -257,7 +259,8 @@ def remove_non_capturing_groups(pattern):
     3. ^a(?:\w+)/b(?:\w+) => ^a/b
     """
     group_start_end_indices = _find_groups(pattern, non_capturing_group_matcher)
-    final_pattern, prev_end = "", None
+    final_pattern = ""
+    prev_end = None
     for start, end, _ in group_start_end_indices:
         final_pattern += pattern[prev_end:start]
         prev_end = end

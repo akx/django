@@ -271,11 +271,10 @@ class AdminReadonlyField:
     def contents(self):
         from django.contrib.admin.templatetags.admin_list import _boolean_icon
 
-        field, obj, model_admin = (
-            self.field["field"],
-            self.form.instance,
-            self.model_admin,
-        )
+        field = self.field["field"]
+        obj = self.form.instance
+        model_admin = self.model_admin
+
         try:
             f, attr, value = lookup_field(field, obj, model_admin)
         except (AttributeError, ValueError, ObjectDoesNotExist):

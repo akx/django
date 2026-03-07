@@ -1197,7 +1197,8 @@ def token_kwargs(bits, parser, support_legacy=False):
         else:
             if len(bits) < 3 or bits[1] != "as":
                 return kwargs
-            key, value = bits[2], bits[0]
+            key = bits[2]
+            value = bits[0]
             del bits[:3]
         kwargs[key] = parser.compile_filter(value)
         if bits and not kwarg_format:

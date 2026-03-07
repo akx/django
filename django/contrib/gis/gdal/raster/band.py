@@ -81,7 +81,10 @@ class GDALBand(GDALRasterBase):
         the statistics might be cached in an auxiliary file.
         """
         # Prepare array with arguments for capi function
-        smin, smax, smean, sstd = c_double(), c_double(), c_double(), c_double()
+        smin = c_double()
+        smax = c_double()
+        smean = c_double()
+        sstd = c_double()
         stats_args = [
             self._ptr,
             c_int(approximate),

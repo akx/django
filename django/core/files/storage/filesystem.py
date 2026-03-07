@@ -183,7 +183,8 @@ class FileSystemStorage(Storage, StorageSettingsMixin):
 
     def listdir(self, path):
         path = self.path(path)
-        directories, files = [], []
+        directories = []
+        files = []
         with os.scandir(path) as entries:
             for entry in entries:
                 if entry.is_dir():

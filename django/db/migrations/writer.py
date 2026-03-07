@@ -251,7 +251,8 @@ class MigrationWriter:
 
         # In case of using MIGRATION_MODULES setting and the custom package
         # doesn't exist, create one, starting from an existing package
-        existing_dirs, missing_dirs = migrations_package_name.split("."), []
+        existing_dirs = migrations_package_name.split(".")
+        missing_dirs = []
         while existing_dirs:
             missing_dirs.insert(0, existing_dirs.pop(-1))
             try:

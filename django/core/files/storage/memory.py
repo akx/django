@@ -149,7 +149,8 @@ class InMemoryDirNode(TimingMixin):
         return self._children.get(path_segment)
 
     def listdir(self):
-        directories, files = [], []
+        directories = []
+        files = []
         for name, entry in self._children.items():
             if isinstance(entry, InMemoryDirNode):
                 directories.append(name)

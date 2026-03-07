@@ -39,13 +39,15 @@ def check_all_models(app_configs, **kwargs):
         for model_constraint in model._meta.constraints:
             constraints[model_constraint.name].append(model._meta.label)
     if settings.DATABASE_ROUTERS:
-        error_class, error_id = Warning, "models.W035"
+        error_class = Warning
+        error_id = "models.W035"
         error_hint = (
             "You have configured settings.DATABASE_ROUTERS. Verify that %s "
             "are correctly routed to separate databases."
         )
     else:
-        error_class, error_id = Error, "models.E028"
+        error_class = Error
+        error_id = "models.E028"
         error_hint = None
     for db_table, model_labels in db_table_models.items():
         if len(model_labels) != 1:

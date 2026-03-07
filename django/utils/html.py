@@ -390,7 +390,8 @@ class Urlizer:
             if url:
                 trimmed = self.trim_url(middle, limit=trim_url_limit)
                 if autoescape and not safe_input:
-                    lead, trail = escape(lead), escape(trail)
+                    lead = escape(lead)
+                    trail = escape(trail)
                     trimmed = escape(trimmed)
                 middle = self.url_template.format(
                     href=escape(url),

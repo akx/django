@@ -81,7 +81,8 @@ NOTICEFUNC = CFUNCTYPE(None, c_char_p, c_char_p)
 
 
 def notice_h(fmt, lst):
-    fmt, lst = fmt.decode(), lst.decode()
+    fmt = fmt.decode()
+    lst = lst.decode()
     try:
         warn_msg = fmt % lst
     except TypeError:
@@ -95,7 +96,8 @@ ERRORFUNC = CFUNCTYPE(None, c_char_p, c_char_p)
 
 
 def error_h(fmt, lst):
-    fmt, lst = fmt.decode(), lst.decode()
+    fmt = fmt.decode()
+    lst = lst.decode()
     try:
         err_msg = fmt % lst
     except TypeError:

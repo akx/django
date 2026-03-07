@@ -283,8 +283,7 @@ def model_ngettext(obj, n=None):
             n = obj.count()
         obj = obj.model
     d = model_format_dict(obj)
-    singular, plural = d["verbose_name"], d["verbose_name_plural"]
-    return ngettext(singular, plural, n or 0)
+    return ngettext(d["verbose_name"], d["verbose_name_plural"], n or 0)
 
 
 def lookup_field(name, obj, model_admin=None):
